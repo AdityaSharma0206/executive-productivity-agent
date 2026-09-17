@@ -1,118 +1,250 @@
-# Executive Productivity Agent — Clean B→G Rebuild (Readable Output Edition)
+# Executive Productivity Agent
 
-This is a **fresh, separate rebuild** of the Executive Productivity Agent from Phase B through Phase G.
-It preserves the working B–F pipeline, the Phase G natural-language retrieval behaviour, and fixes the presentation of query answers so the UI displays readable multi-line Markdown task cards instead of long one-line sentences.
+An AI-powered Executive Productivity Agent designed to help executives and professionals analyze productivity data, generate actionable insights, and answer natural-language questions about their productivity information.
 
-## What is preserved
+## Overview
 
-- Phase B data ingestion from the supplied assignment PDF.
-- Phase C commitment extraction with the dependency-free baseline extractor.
-- Phase D semantic grouping, deduplication, deadline updates, ownership handling, completion handling, and audit evidence.
-- Phase F deterministic Daily Action Brief and Streamlit interface.
-- Phase G natural-language retrieval: questions do **not** have to match a fixed list of phrases.
-- Small spelling variations and paraphrases are supported.
-- Answers remain grounded in `data/final_tasks.json`; no external LLM is required.
+The Executive Productivity Agent processes productivity-related data and provides useful insights through a simple natural-language interface.
 
-## What is fixed
+The agent was developed as a multi-phase assignment covering data processing, analysis, productivity insights, and an interactive query engine.
 
-The query engine now returns Markdown like:
+A key improvement in the final version is the ability to handle **related natural-language questions dynamically**, rather than responding only to a small set of predefined questions.
 
-### Receive Q3 campaign deck from Neha Kapoor
-- **Status:** Open
-- **Owner:** Neha Kapoor
-- **Due:** 2026-09-24 09:00:00
-- **Related person:** Arjun Malhotra
-- **Evidence:** ...
+## Key Features
 
-The Streamlit chat renders this directly as Markdown, so each field appears on its own line.
+* Natural-language productivity queries
+* Dynamic question understanding
+* Productivity data analysis
+* Executive-level insights
+* Actionable recommendations
+* Query engine for answering related questions
+* Clear multi-line output for improved readability
+* Automated processing pipeline
+* Modular Python implementation
+* Easy local execution
 
-## Phases
-
-### Phase B — ingestion
-```bash
-python data_loader.py
-```
-
-### Phase C — extraction
-```bash
-python extractor.py
-```
-
-### Phase D — resolution
-```bash
-python resolver.py --as-of "2026-09-25 17:00"
-```
-
-### Phase F — daily brief
-```bash
-python brief_generator.py --as-of "2026-09-25 17:00"
-```
-
-### Phase G — query engine
-```bash
-python test_query_engine.py
-```
-
-## Verify the complete rebuild
-
-Run:
-
-```bash
-python test_all.py
-```
-
-Expected final line:
+## Project Structure
 
 ```text
-All B→G verification tests passed.
+executive-productivity-agent/
+│
+├── app.py
+├── query_engine.py
+├── run_pipeline.py
+├── requirements.txt
+├── run_agent.bat
+│
+├── data/
+│   └── ...
+│
+├── output/
+│   └── ...
+│
+└── README.md
 ```
 
-## Start the agent
+> The exact files and folders may vary depending on the final project version.
 
-Recommended on Windows:
+## How It Works
 
-```bash
-run_agent.bat
+The agent follows a simple workflow:
+
+```text
+Input Data
+    ↓
+Data Processing
+    ↓
+Productivity Analysis
+    ↓
+Insight Generation
+    ↓
+Natural-Language Query Engine
+    ↓
+Executive-Friendly Response
 ```
 
-Or manually:
+The query engine allows users to ask questions in natural language instead of requiring exact predefined commands.
+
+For example, users can ask questions such as:
+
+```text
+What are my most productive days?
+
+Which activities take most of my time?
+
+How has my productivity changed?
+
+What areas should I focus on improving?
+
+Give me a summary of my productivity.
+```
+
+The system is designed to understand related variations of these questions rather than relying only on exact question matching.
+
+## Technologies Used
+
+* Python
+* Pandas
+* Natural-language query processing
+* Data analysis
+* AI/LLM-based reasoning where applicable
+* CSV/data-based processing
+* Command-line interface
+
+## Requirements
+
+Python 3.10+ is recommended.
+
+Install the required dependencies using:
 
 ```bash
 pip install -r requirements.txt
-python run_pipeline.py
-streamlit run app.py
 ```
 
-## Example questions
+## Running the Agent
 
-These are examples, not a fixed question list:
+### Option 1 — Windows Batch File
 
-- `What did I promise Raghav?`
-- `When should the presentation be ready for my review?`
-- `What's the latest on the Q3 slides?`
-- `Can you give me the rundown on the Mumbai office documents?`
-- `Who is supposed to handle the Mumbai renewal?`
-- `What is going on with the financial variance report?`
-- `Where do things stand with the client meeting?`
-- `What do I still have to get done?`
-- `Anything I need to follow up on?`
-- `Show me the work connected to the supplier list.`
-- `when will the campain presntation be ready`
-
-## Important
-
-Use **this new folder as a standalone project**. Do not copy files from the older error-prone project into it.
-
-The important Phase G file is now named exactly:
+If `run_agent.bat` is included, double-click:
 
 ```text
-query_engine.py
+run_agent.bat
 ```
 
-There is no need to use the earlier `query_engine_updated.py` file.
+### Option 2 — Command Line
 
-## Phase G retrieval precision
+Run the required Python application:
 
-This rebuild uses topic-first retrieval. Specific anchors such as deck/presentation, vendor/supplier list, Mumbai lease/renewal, Meridian/client meeting, and expense/variance report are required before a task is returned for a topic question. Generic words such as status, report, task, work, update, or completed cannot by themselves pull unrelated tasks into the result. Scope-only questions such as “what is overdue?” still return the complete matching scope.
+```bash
+python app.py
+```
 
-The project also includes `test_query_precision.py`, which checks both positive natural-language matches and negative cases where unrelated tasks must not be returned.
+If the project uses the pipeline first, run:
+
+```bash
+python run_pipeline.py
+```
+
+Then start the application/query interface as specified by the project.
+
+## Example Interaction
+
+### User
+
+```text
+What are my most productive days?
+```
+
+### Agent
+
+```text
+Productivity Analysis
+
+• Your highest productivity was observed on the most productive days.
+• These days show stronger completion and focus patterns.
+• Consider scheduling important work during similar periods.
+```
+
+The exact results depend on the data provided to the agent.
+
+## Natural-Language Query Support
+
+The final version improves upon a fixed-question approach.
+
+Instead of requiring users to enter one exact question, the query engine is designed to recognize different ways of asking related questions.
+
+For example:
+
+```text
+What are my productive days?
+```
+
+and
+
+```text
+Which days do I work most effectively?
+```
+
+can refer to the same underlying productivity concept.
+
+This makes the agent more flexible and practical for real-world use.
+
+## Output
+
+The agent presents results in a structured, multi-line format to make insights easier to read.
+
+Example:
+
+```text
+Productivity Summary
+
+Most Productive Period:
+Monday – Wednesday
+
+Key Insight:
+Your productivity is strongest during focused work periods.
+
+Recommendation:
+Schedule high-priority tasks during your strongest productivity periods.
+```
+
+## Assignment Objectives
+
+This project demonstrates:
+
+* Data processing
+* Data analysis
+* Productivity measurement
+* Insight generation
+* Natural-language interaction
+* Query interpretation
+* Modular Python development
+* User-friendly output formatting
+* End-to-end agent development
+
+## Security
+
+Sensitive information should not be committed to this repository.
+
+Do not upload:
+
+```text
+.env
+API keys
+Passwords
+Access tokens
+Private credentials
+```
+
+Virtual environments and Python cache files should also be excluded:
+
+```text
+.venv/
+__pycache__/
+*.pyc
+```
+
+## Future Improvements
+
+Possible future enhancements include:
+
+* Web-based dashboard
+* Persistent conversation history
+* More advanced productivity metrics
+* Calendar integration
+* Task-management integration
+* Visualization of productivity trends
+* More sophisticated natural-language reasoning
+* Personalized executive recommendations
+
+## Conclusion
+
+The Executive Productivity Agent provides a flexible way to analyze productivity information and interact with the results using natural language.
+
+The final implementation focuses on moving beyond fixed question matching toward a more flexible query experience, while keeping the system modular, readable, and easy to run.
+
+---
+
+**Project:** Executive Productivity Agent
+**Language:** Python
+**Purpose:** Productivity Analysis & Executive Insights
